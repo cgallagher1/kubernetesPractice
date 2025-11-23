@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build-test-docker:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+
+      - name: Build and Test Apps
+        run: |
+          for app in myapp1 myapp2; do
+            echo "Building $app..."
+            cd $app
+            go build ./...
+            go test ./...
+            cd ..
+          done
+
+      - name: Log in to Docker Hub
+        run: |
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+
+      - name: Build and Push Docker Images
+        run: |
+          for app in myapp1 myapp2; do
+            docker build -t $DOCKER_USERNAME/$app:latest $app/
+            docker push $DOCKER_USERNAME/$app:latest
+          done
