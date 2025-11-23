@@ -16,3 +16,13 @@ ingress:
   enabled: true
   host: myapps.local
   name: myapps-ingress
+
+mysql:
+  enabled: true
+  rootPassword: rootpassword
+  user: appuser
+  password: password
+  database: messages
+  image: mysql:8.1
+  port: 3306
+  replicaCount: 1
