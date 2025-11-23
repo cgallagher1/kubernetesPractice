@@ -1,0 +1,34 @@
+{{- range .Values.apps }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .name }}
+spec:
+  replicas: {{ $.Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .name }}
+    spec:
+      containers:
+      - name: {{ .name }}
+        image: {{ .image }}
+        ports:
+        - containerPort: {{ .containerPort }}
+        env:
+        - name: MESSAGE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .name }}-config
+              key: MESSAGE
+        - name: LISTENANDSERVE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .name }}-config
+              key: LISTENANDSERVE
+        
+---
+{{- end }}

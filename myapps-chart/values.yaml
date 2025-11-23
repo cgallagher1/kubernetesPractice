@@ -1,0 +1,18 @@
+replicaCount: 1
+
+apps:
+  - name: myapp1
+    image: chuckster456/myapp1:latest
+    servicePort: 80
+    containerPort: 5000
+    message: "uwu from helm chart app 1"
+  - name: myapp2
+    image: chuckster456/myapp2:latest
+    servicePort: 80
+    containerPort: 5000
+    message: "uwu from helm chart app 2"
+
+ingress:
+  enabled: true
+  host: myapps.local
+  name: myapps-ingress

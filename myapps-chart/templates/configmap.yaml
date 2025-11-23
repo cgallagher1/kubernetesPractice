@@ -1,0 +1,10 @@
+{{- range .Values.apps }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .name }}-config
+data:
+  MESSAGE: "{{ .message }}"
+  LISTENANDSERVE: "{{ .containerPort }}"
+---
+{{- end }}
