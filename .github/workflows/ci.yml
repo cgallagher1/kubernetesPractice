@@ -27,8 +27,8 @@ jobs:
           for app in myapp1 myapp2; do
             echo "Building $app..."
             cd $app
-            go build ./...
-            go test ./...
+            go build
+            go test
             cd ..
           done
 
